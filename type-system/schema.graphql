@@ -1,0 +1,116 @@
+type Query {
+    eventos(id: Int): [evento]
+    eventosID(id: Int): [evento]
+    participantes(id: Int): [participante]
+    salas(id: Int): [sala]
+    salasConEventos: [salaEvento]
+
+
+    eventoConParticipantes(eve_id: Int!): [eventoParticipante]
+    salasEventosParticipante(par_id: Int!): [salaEventoParticipante]
+}
+
+type Mutation {
+    crearEvento(evento: inputEvento): evento
+    actualizarEvento(evento: inputEventoUpdate): evento
+    eliminarEvento(evento: inputEventoDelete): evento
+    asignarParticipanteEvento(eventoParticipante: inputEventoParticipante): eventoParticipanteRelacion
+    eliminarParticipanteEvento(eventoParticipante: inputEventoParticipanteDelete): eventoParticipanteRelacion
+    crearParticipante(participante: inputParticipante): participante
+    crearSala(sala: inputSala): sala
+}
+
+type participante {
+    par_id: Int!
+    par_nombre: String!
+    par_cedula: String!
+    par_correo: String!
+    eventos: [evento]
+}
+
+type sala {
+    sal_id: Int!
+    sal_nombre: String!
+    sal_descripcion: String!
+    sal_estado: Boolean!
+    eventos: [evento]
+}
+
+type evento {
+    eve_id: Int!
+    sal_id: Int
+    eve_nombre: String!
+    eve_costo: Float!
+    sala: sala
+    participantes: [participante]
+    totalParticipantes: Int
+    costoTotal: Float
+}
+
+type eventoParticipanteRelacion {
+    eve_id: Int!
+    par_id: Int!
+    evepar_cantidad: Float!
+}
+
+type salaEvento {
+    sal_id: Int
+    sal_nombre: String
+    eve_nombre: String
+    eve_costo: Float
+}
+
+type eventoParticipante {
+    eve_nombre: String
+    par_cedula: String
+    par_nombre: String
+    eve_par_pago: Float
+}
+
+type salaEventoParticipante {
+    sal_nombre: String
+    eve_nombre: String
+    eve_costo: Float
+    par_nombre: String
+    eve_par_pago: Float
+}
+
+input inputEvento {
+    sal_id: Int!
+    eve_nombre: String!
+    eve_costo: Float!
+}
+
+input inputEventoUpdate {
+    eve_id: Int!
+    sal_id: Int!
+    eve_nombre: String!
+    eve_costo: Float!
+}
+
+input inputEventoDelete {
+    eve_id: Int!
+}
+
+input inputEventoParticipante {
+    eve_id: Int!
+    par_id: Int!
+    evepar_cantidad: Float!
+}
+
+input inputEventoParticipanteDelete {
+    eve_id: Int!
+    par_id: Int!
+}
+
+input inputParticipante {
+    par_nombre: String!
+    par_cedula: String!
+    par_correo: String!
+}
+
+input inputSala {
+    sal_nombre: String!
+    sal_descripcion: String!
+    sal_estado: Boolean!
+}
